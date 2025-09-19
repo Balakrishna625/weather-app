@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  weather-backend:
+    build: ./backend
+    container_name: weather-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DEFAULT_CITY=London
+      - API_ENDPOINT=http://api.openweathermap.org/data/2.5/weather
+      - CITIES_CONFIG={"london":"London,UK","tokyo":"Tokyo,JP","newyork":"New York,US","sydney":"Sydney,AU","paris":"Paris,FR"}
+      # Replace with your actual API key
+      - OPENWEATHER_API_KEY=YOUR_ACTUAL_API_KEY_HERE
+      - ADMIN_PASSWORD=admin123
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  weather-frontend:
+    build: ./frontend
+    container_name: weather-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - weather-backend
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  default:
+    name: weather-network

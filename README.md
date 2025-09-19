@@ -2,6 +2,61 @@
 
 A comprehensive demo application showcasing how to use Kubernetes ConfigMaps and Secrets for configuration management in a microservices architecture.
 
+## 🚀 Quick Setup
+
+### 1. Get an OpenWeatherMap API Key
+1. Visit [OpenWeatherMap](https://openweathermap.org/api)
+2. Sign up for a free account
+3. Generate an API key from your account dashboard
+4. Keep your API key safe - you'll need it for the next steps
+
+### 2. Choose Your Deployment Method
+
+#### Option A: Local Development
+```bash
+# Clone the repository
+git clone https://github.com/Balakrishna625/weather-app.git
+cd weather-app
+
+# Copy environment file and set your API key
+cp .env.example .env
+# Edit .env and replace YOUR_ACTUAL_API_KEY_HERE with your real API key
+
+# Install dependencies
+cd backend && npm install && cd ../frontend && npm install && cd ..
+
+# Start backend (terminal 1)
+cd backend && npm start
+
+# Start frontend (terminal 2) 
+cd frontend && npm start
+# The app will start on http://localhost:3001
+```
+
+#### Option B: Docker Compose (Coming Soon)
+```bash
+# Set your API key in docker-compose.yml
+# Then run:
+docker-compose up -d
+```
+
+#### Option C: Kubernetes Deployment
+```bash
+# Update the secret with your API key
+kubectl edit secret weather-secrets -n weather-demo
+# Or use the stringData format in k8s/secret.yaml
+
+# Deploy the application
+kubectl apply -f k8s/
+```
+
+## ⚠️ Important Notes
+
+- **The app will not work without a valid OpenWeatherMap API key**
+- The UI will show clear error messages if the API key is missing or invalid
+- All API keys in this repository are placeholders - replace with your real keys
+- The free OpenWeatherMap tier allows 1,000 calls per day
+
 ## 🏗️ Architecture
 
 ```
